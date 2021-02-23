@@ -1,39 +1,29 @@
 //import liraries
-import React, {Component} from 'react';
+import React, {useState} from 'react';
 import {View, Text, StyleSheet, Modal, Pressable} from 'react-native';
 
 // create a component
-class ContactsComponent extends Component {
-  // Define States
-  state = {
-    modalVisible: false,
-  };
-  render() {
-    return (
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={this.state.modalVisible}
-        onRequestClose={() => {
-          this.setState({modalVisible: !this.state.modalVisible});
-        }}
-        onDismiss={() => this.setState({modalVisible: false})}>
-        <View style={styles.centeredView}>
-          <View style={styles.modalView}>
-            <Text style={styles.modalText}>Hello World!</Text>
-            <Pressable
-              style={[styles.button, styles.buttonClose]}
-              onPress={() =>
-                this.setState({modalVisible: !this.state.modalVisible})
-              }>
-              <Text style={styles.textStyle}>Hide Modal</Text>
-            </Pressable>
-          </View>
+const ContactsComponent = (props) => {
+  console.log('PROPS', props);
+  const [modalVisible, setModalVisible] = useState(false);
+  return (
+    <Modal
+      animationType="slide"
+      transparent={true}
+      visible={props.modalVisible}>
+      <View style={styles.centeredView}>
+        <View style={styles.modalView}>
+          <Text style={styles.modalText}>Hello World!</Text>
+          <Pressable
+            style={[styles.button, styles.buttonClose]}
+            onPress={() => props.modalClose()}>
+            <Text style={styles.textStyle}>Hide Modal</Text>
+          </Pressable>
         </View>
-      </Modal>
-    );
-  }
-}
+      </View>
+    </Modal>
+  );
+};
 
 // define your styles
 const styles = StyleSheet.create({
@@ -58,7 +48,7 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 5,
     width: '90%',
-    height: '90%',
+    height: '70%',
   },
   button: {
     borderRadius: 20,

@@ -6,6 +6,11 @@ import ContactsComponent from './ContactsComponent';
 
 // create a component
 class Home extends Component {
+  // Define States
+  state = {
+    showModal: false,
+    contacts: [],
+  };
   // Get Contacts
   handleOnPress = async () => {
     Contacts.checkPermission().then((permission) => {
@@ -19,7 +24,8 @@ class Home extends Component {
         Contacts.getAll()
           .then((contacts) => {
             if (contacts.length > 0) {
-              this.setState({modalVisible: true});
+              this.setState({showModal: true});
+              console.log(contacts);
             }
           })
           .catch((error) => console.error(error));
@@ -29,6 +35,10 @@ class Home extends Component {
       }
     });
   };
+
+  closeModal = () => {
+    this.setState({showModal: false});
+  };
   render() {
     return (
       <View style={styles.container}>
@@ -37,7 +47,10 @@ class Home extends Component {
           onPress={() => this.handleOnPress()}>
           <Text style={styles.getContactsButtonText}>Get Contacts</Text>
         </TouchableOpacity>
-        <ContactsComponent />
+        <ContactsComponent
+          modalVisible={this.state.showModal}
+          modalClose={this.closeModal}
+        />
       </View>
     );
   }
