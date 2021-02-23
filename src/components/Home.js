@@ -1,14 +1,30 @@
 //import liraries
 import React, {Component} from 'react';
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import Contacts from 'react-native-contacts';
 
 // create a component
 class Home extends Component {
-  // Get device contacts
-  handleOnPress = () => {
-    console.log('Pressed');
+  // Get Contacts
+  handleOnPress = async () => {
+    console.log('Pressed Test');
+    Contacts.checkPermission().then((permission) => {
+      // Contacts.PERMISSION_AUTHORIZED || Contacts.PERMISSION_UNDEFINED || Contacts.PERMISSION_DENIED
+      if (permission === 'undefined') {
+        Contacts.requestPermission().then((permission) => {
+          console.log('requesting');
+        });
+      }
+      if (permission === 'authorized') {
+        Contacts.getAll()
+          .then((contacts) => console.log(contacts))
+          .catch((error) => console.error(error));
+      }
+      if (permission === 'denied') {
+        console.log('nay');
+      }
+    });
   };
-
   render() {
     return (
       <View style={styles.container}>
