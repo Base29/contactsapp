@@ -25,7 +25,7 @@ class Home extends Component {
           .then((contacts) => {
             if (contacts.length > 0) {
               this.setState({showModal: true});
-              console.log(contacts);
+              this.state.contacts.push(contacts);
             }
           })
           .catch((error) => console.error(error));
@@ -50,6 +50,7 @@ class Home extends Component {
         <ContactsComponent
           modalVisible={this.state.showModal}
           modalClose={this.closeModal}
+          contacts={this.state.contacts}
         />
       </View>
     );
