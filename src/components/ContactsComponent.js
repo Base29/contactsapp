@@ -14,10 +14,11 @@ const placeHolderImage = require('./assets/placeholder.jpg');
 
 // create a component
 const ContactsComponent = (props) => {
-  console.log('Main Props', props);
+  // Declaring props
   const [contactsVisible, setContactsVisible] = useState(true);
   const [singleContactVisible, setSingleContactVisible] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState('');
+
   const renderContact = (contact, key) => {
     return (
       <TouchableOpacity
@@ -51,20 +52,22 @@ const ContactsComponent = (props) => {
     );
   };
 
-  const SingleContact = (props) => {
-    console.log('Single Props', props);
+  // Component to show single contact phonenumber
+  const SingleContact = ({ contactPhoneNumber }) => {
     return (
       <View>
-        <Text>{phoneNumber}</Text>
+        <Text style={styles.phoneNumberText}>{contactPhoneNumber}</Text>
         <Pressable
           onPress={() => {
             setContactsVisible(true);
-          }}>
-          <Text>Choose another</Text>
+          }}
+          style={styles.option}>
+          <Text style={styles.optionText}>Choose Another Contact</Text>
         </Pressable>
       </View>
     );
   };
+
   if (contactsVisible) {
     return (
       <ScrollView>
@@ -74,7 +77,7 @@ const ContactsComponent = (props) => {
   }
 
   if (singleContactVisible) {
-    return <SingleContact phoneNumber={phoneNumber} />;
+    return <SingleContact contactPhoneNumber={phoneNumber} />;
   }
 
   return null;
@@ -94,6 +97,17 @@ const styles = StyleSheet.create({
   },
   logoView: {
     marginRight: 30,
+  },
+  phoneNumberText: {
+    fontSize: 30,
+    fontWeight: 'bold',
+    marginBottom: 30,
+  },
+  option: {
+    alignItems: 'center',
+  },
+  optionText: {
+    color: '#9e9d9d',
   },
 });
 
