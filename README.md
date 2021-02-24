@@ -1,4 +1,4 @@
-# Hello World Mobile (React Native)
+# Contacts Application (React Native)
 
 ![](https://img.shields.io/david/emiketic/helloworld-react-native.svg?style=for-the-badge)
 
