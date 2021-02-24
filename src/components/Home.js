@@ -6,8 +6,6 @@ import {
   StyleSheet,
   TouchableOpacity,
   SafeAreaView,
-  ScrollView,
-  Image,
 } from 'react-native';
 import Contacts from 'react-native-contacts';
 import ContactsComponent from './ContactsComponent';
@@ -39,6 +37,7 @@ class Home extends Component {
             if (contacts.length > 0) {
               this.setState({ contactsVisibility: true });
               for (const recordID in contacts) {
+                // Getting required data from the device contacts
                 const contactData = {};
                 contactData.id = contacts[recordID].recordID;
                 contactData.name = `${contacts[recordID].givenName} ${contacts[recordID].familyName}`;
@@ -46,6 +45,7 @@ class Home extends Component {
                   contacts[recordID].phoneNumbers[0].number;
                 contactData.thumbnailPath = contacts[recordID].thumbnailPath;
 
+                // Pushing the required data to an array
                 this.state.contacts.push(contactData);
               }
             }
@@ -56,6 +56,10 @@ class Home extends Component {
         console.log('nay');
       }
     });
+  };
+
+  hideContactsComponent = () => {
+    this.setState({ contactsVisibility: false });
   };
 
   render() {
@@ -77,13 +81,17 @@ class Home extends Component {
             <Text style={styles.getContactsButtonText}>Get Contacts</Text>
           </TouchableOpacity>
         </View>
-        {contactsVisibility ? (
-          <View style={styles.contactsView}>
-            <ContactsComponent contacts={newArray} hideContacts={true} />
-          </View>
-        ) : (
-          <View />
-        )}
+
+        <View style={styles.contactsView}>
+          {contactsVisibility ? (
+            <ContactsComponent
+              contacts={newArray}
+              hideContacts={this.hideContactsComponent}
+            />
+          ) : (
+            <View />
+          )}
+        </View>
       </SafeAreaView>
     );
   }

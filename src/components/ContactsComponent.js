@@ -10,34 +10,40 @@ import {
 } from 'react-native';
 
 const placeHolderImage = require('./assets/placeholder.jpg');
-const renderContact = (contact, key) => {
-  return (
-    <TouchableOpacity style={styles.contactContainer} key={key}>
-      <View style={styles.logoView}>
-        <Image
-          style={styles.tinyLogo}
-          source={
-            contact.thumbnailPath !== ''
-              ? contact.thumbnailPath
-              : placeHolderImage
-          }
-        />
-      </View>
-      <View>
-        <View style={{ paddingBottom: 5 }}>
-          <Text>{contact.name}</Text>
-        </View>
 
-        <View>
-          <Text>{contact.phoneNumber}</Text>
-        </View>
-      </View>
-    </TouchableOpacity>
-  );
-};
 // create a component
 const ContactsComponent = (props) => {
   console.log(props);
+  const renderContact = (contact, key) => {
+    return (
+      <TouchableOpacity
+        style={styles.contactContainer}
+        key={key}
+        onPress={() => {
+          props.hideContacts();
+        }}>
+        <View style={styles.logoView}>
+          <Image
+            style={styles.tinyLogo}
+            source={
+              contact.thumbnailPath !== ''
+                ? contact.thumbnailPath
+                : placeHolderImage
+            }
+          />
+        </View>
+        <View>
+          <View style={{ paddingBottom: 5 }}>
+            <Text>{contact.name}</Text>
+          </View>
+
+          <View>
+            <Text>{contact.phoneNumber}</Text>
+          </View>
+        </View>
+      </TouchableOpacity>
+    );
+  };
   return (
     <ScrollView>
       {props.contacts.map((contact, key) => renderContact(contact, key))}
