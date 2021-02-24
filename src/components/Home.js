@@ -1,6 +1,13 @@
 //import liraries
-import React, {Component} from 'react';
-import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import React, { Component } from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  SafeAreaView,
+  ScrollView,
+} from 'react-native';
 import Contacts from 'react-native-contacts';
 import ContactsComponent from './ContactsComponent';
 
@@ -10,6 +17,10 @@ class Home extends Component {
   state = {
     showModal: false,
     contacts: [],
+  };
+
+  componentDidMount = () => {
+    this.handleOnPress();
   };
   // Get Contacts
   handleOnPress = async () => {
@@ -24,8 +35,17 @@ class Home extends Component {
         Contacts.getAll()
           .then((contacts) => {
             if (contacts.length > 0) {
-              this.setState({showModal: true});
-              this.state.contacts.push(contacts);
+              this.setState({ showModal: true });
+              for (const recordID in contacts) {
+                const contactData = {};
+                contactData.id = contacts[recordID].recordID;
+                contactData.name = `${contacts[recordID].givenName} ${contacts[recordID].familyName}`;
+                contactData.phoneNumber =
+                  contacts[recordID].phoneNumbers[0].number;
+                contactData.thumbnailPath = contacts[recordID].thumbnailPath;
+
+                this.state.contacts.push(contactData);
+              }
             }
           })
           .catch((error) => console.error(error));
@@ -37,22 +57,47 @@ class Home extends Component {
   };
 
   closeModal = () => {
-    this.setState({showModal: false});
+    this.setState({ showModal: false });
+  };
+
+  renderContact = (contact, key) => {
+    return (
+      <TouchableOpacity style={styles.contactContainer} key={key}>
+        <View>
+          <Image style={styles.tinyLogo} source={} />
+        </View>
+        <View>
+          <Text>{contact.name}</Text>
+          <Text>{contact.phoneNumber}</Text>
+        </View>
+      </TouchableOpacity>
+    );
   };
   render() {
+    const { contacts } = this.state;
+    const newArray = [];
+    contacts.forEach((obj) => {
+      if (!newArray.some((o) => o.name === obj.name)) {
+        newArray.push({ ...obj });
+      }
+    });
+
+    console.log(newArray);
     return (
-      <View style={styles.container}>
-        <TouchableOpacity
-          style={styles.getContactsButton}
-          onPress={() => this.handleOnPress()}>
-          <Text style={styles.getContactsButtonText}>Get Contacts</Text>
-        </TouchableOpacity>
-        <ContactsComponent
-          modalVisible={this.state.showModal}
-          modalClose={this.closeModal}
-          contacts={this.state.contacts}
-        />
-      </View>
+      <SafeAreaView style={styles.container}>
+        <View style={styles.getContactsButtonContainer}>
+          <TouchableOpacity
+            style={styles.getContactsButton}
+            onPress={() => this.handleOnPress()}>
+            <Text style={styles.getContactsButtonText}>Get Contacts</Text>
+          </TouchableOpacity>
+        </View>
+        <View style={styles.contactsView}>
+          <ScrollView>
+            {newArray.map((contact, key) => this.renderContact(contact, key))}
+          </ScrollView>
+        </View>
+      </SafeAreaView>
     );
   }
 }
@@ -65,6 +110,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#ffffff',
   },
+  getContactsButtonContainer: {
+    flex: 0.3,
+
+    flexDirection: 'row',
+  },
   getContactsButton: {
     width: '80%',
     height: 50,
@@ -72,11 +122,23 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     justifyContent: 'center',
     alignItems: 'center',
+    marginTop: '20%',
   },
   getContactsButtonText: {
     fontSize: 25,
     color: '#ffffff',
     fontWeight: 'bold',
+  },
+  contactsView: {
+    flex: 1,
+    flexDirection: 'row',
+  },
+  contactContainer: {
+    padding: 10,
+  },
+  tinyLogo: {
+    width: 50,
+    height: 50,
   },
 });
 

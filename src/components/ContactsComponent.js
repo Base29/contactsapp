@@ -1,11 +1,10 @@
 //import liraries
-import React, {useState} from 'react';
-import {View, Text, StyleSheet, Modal, Pressable} from 'react-native';
+import React, { Component } from 'react';
+import { View, Text, StyleSheet, Modal, Pressable } from 'react-native';
 
 // create a component
 const ContactsComponent = (props) => {
-  console.log('PROPS', props);
-  const [modalVisible, setModalVisible] = useState(false);
+  console.log(props);
   return (
     <Modal
       animationType="slide"
@@ -19,12 +18,14 @@ const ContactsComponent = (props) => {
             onPress={() => props.modalClose()}>
             <Text style={styles.textStyle}>Hide Modal</Text>
           </Pressable>
+          {props.contacts.map((contact, index) => {
+            return <Text key={index}>Faisal</Text>;
+          })}
         </View>
       </View>
     </Modal>
   );
 };
-
 // define your styles
 const styles = StyleSheet.create({
   centeredView: {
