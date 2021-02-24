@@ -24,6 +24,9 @@ This is a simple application developed using React Native (version 0.63.x). The 
 # install dependencies
 npm install
 
+# install pods
+cd ios && pod install
+
 # run on Android device/emulator
 npx react-native run-android
 
