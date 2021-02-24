@@ -1,75 +1,64 @@
 //import liraries
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, Modal, Pressable } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  TouchableOpacity,
+  Image,
+} from 'react-native';
 
+const placeHolderImage = require('./assets/placeholder.jpg');
+const renderContact = (contact, key) => {
+  return (
+    <TouchableOpacity style={styles.contactContainer} key={key}>
+      <View style={styles.logoView}>
+        <Image
+          style={styles.tinyLogo}
+          source={
+            contact.thumbnailPath !== ''
+              ? contact.thumbnailPath
+              : placeHolderImage
+          }
+        />
+      </View>
+      <View>
+        <View style={{ paddingBottom: 5 }}>
+          <Text>{contact.name}</Text>
+        </View>
+
+        <View>
+          <Text>{contact.phoneNumber}</Text>
+        </View>
+      </View>
+    </TouchableOpacity>
+  );
+};
 // create a component
 const ContactsComponent = (props) => {
   console.log(props);
   return (
-    <Modal
-      animationType="slide"
-      transparent={true}
-      visible={props.modalVisible}>
-      <View style={styles.centeredView}>
-        <View style={styles.modalView}>
-          <Text style={styles.modalText}>Hello World!</Text>
-          <Pressable
-            style={[styles.button, styles.buttonClose]}
-            onPress={() => props.modalClose()}>
-            <Text style={styles.textStyle}>Hide Modal</Text>
-          </Pressable>
-          {props.contacts.map((contact, index) => {
-            return <Text key={index}>Faisal</Text>;
-          })}
-        </View>
-      </View>
-    </Modal>
+    <ScrollView>
+      {props.contacts.map((contact, key) => renderContact(contact, key))}
+    </ScrollView>
   );
 };
 // define your styles
 const styles = StyleSheet.create({
-  centeredView: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 22,
-  },
-  modalView: {
-    margin: 20,
-    backgroundColor: 'white',
-    borderRadius: 20,
-    padding: 35,
-    alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
-    width: '90%',
-    height: '70%',
-  },
-  button: {
-    borderRadius: 20,
+  contactContainer: {
     padding: 10,
-    elevation: 2,
+    flexDirection: 'row',
+    marginBottom: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#000000',
   },
-  buttonOpen: {
-    backgroundColor: '#F194FF',
+  tinyLogo: {
+    width: 50,
+    height: 50,
   },
-  buttonClose: {
-    backgroundColor: '#2196F3',
-  },
-  textStyle: {
-    color: 'white',
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
-  modalText: {
-    marginBottom: 15,
-    textAlign: 'center',
+  logoView: {
+    marginRight: 30,
   },
 });
 

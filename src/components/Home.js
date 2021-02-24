@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   SafeAreaView,
   ScrollView,
+  Image,
 } from 'react-native';
 import Contacts from 'react-native-contacts';
 import ContactsComponent from './ContactsComponent';
@@ -17,6 +18,7 @@ class Home extends Component {
   state = {
     showModal: false,
     contacts: [],
+    contactsVisibility: false,
   };
 
   componentDidMount = () => {
@@ -35,7 +37,7 @@ class Home extends Component {
         Contacts.getAll()
           .then((contacts) => {
             if (contacts.length > 0) {
-              this.setState({ showModal: true });
+              this.setState({ contactsVisibility: true });
               for (const recordID in contacts) {
                 const contactData = {};
                 contactData.id = contacts[recordID].recordID;
@@ -56,33 +58,16 @@ class Home extends Component {
     });
   };
 
-  closeModal = () => {
-    this.setState({ showModal: false });
-  };
-
-  renderContact = (contact, key) => {
-    return (
-      <TouchableOpacity style={styles.contactContainer} key={key}>
-        <View>
-          <Image style={styles.tinyLogo} source={} />
-        </View>
-        <View>
-          <Text>{contact.name}</Text>
-          <Text>{contact.phoneNumber}</Text>
-        </View>
-      </TouchableOpacity>
-    );
-  };
   render() {
-    const { contacts } = this.state;
+    const { contacts, contactsVisibility } = this.state;
     const newArray = [];
+
+    // Removing duplicates
     contacts.forEach((obj) => {
       if (!newArray.some((o) => o.name === obj.name)) {
         newArray.push({ ...obj });
       }
     });
-
-    console.log(newArray);
     return (
       <SafeAreaView style={styles.container}>
         <View style={styles.getContactsButtonContainer}>
@@ -92,11 +77,13 @@ class Home extends Component {
             <Text style={styles.getContactsButtonText}>Get Contacts</Text>
           </TouchableOpacity>
         </View>
-        <View style={styles.contactsView}>
-          <ScrollView>
-            {newArray.map((contact, key) => this.renderContact(contact, key))}
-          </ScrollView>
-        </View>
+        {contactsVisibility ? (
+          <View style={styles.contactsView}>
+            <ContactsComponent contacts={newArray} hideContacts={true} />
+          </View>
+        ) : (
+          <View />
+        )}
       </SafeAreaView>
     );
   }
@@ -132,13 +119,6 @@ const styles = StyleSheet.create({
   contactsView: {
     flex: 1,
     flexDirection: 'row',
-  },
-  contactContainer: {
-    padding: 10,
-  },
-  tinyLogo: {
-    width: 50,
-    height: 50,
   },
 });
 
