@@ -43,6 +43,8 @@ class Home extends Component {
                 contactData.name = `${contacts[recordID].givenName} ${contacts[recordID].familyName}`;
                 contactData.phoneNumber =
                   contacts[recordID].phoneNumbers[0].number;
+                contactData.phoneNumberType =
+                  contacts[recordID].phoneNumbers[0].label;
                 contactData.thumbnailPath = contacts[recordID].thumbnailPath;
 
                 // Pushing the required data to an array

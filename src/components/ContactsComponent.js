@@ -45,7 +45,9 @@ const ContactsComponent = (props) => {
           </View>
 
           <View>
-            <Text>{contact.phoneNumber}</Text>
+            <Text>
+              {contact.phoneNumber} ({contact.phoneNumberType})
+            </Text>
           </View>
         </View>
       </TouchableOpacity>
