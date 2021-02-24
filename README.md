@@ -2,7 +2,7 @@
 
 ![](https://img.shields.io/david/emiketic/helloworld-react-native.svg?style=for-the-badge)
 
-This is a simple application developed using React Native (version 0.63.x). The purpose of this application is to fetch the contacts from a user's device and diplay them in a list and when a contact is selected then hide the list of contacts and show the phone number of the selected contact.
+This is a simple application developed using React Native (version 0.63.x). The purpose of this application is to fetch the contacts from a user's device and display a list of available contacts and when a contact is selected then hide the list of contacts and show the phone number of the selected contact.
 
 ## Technology
 
